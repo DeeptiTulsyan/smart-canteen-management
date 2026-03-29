@@ -1,0 +1,17 @@
+// shared/constants.js
+
+export const QUEUE_NAME = "order_events";
+
+export const EVENTS = {
+  ORDER_PLACED: "ORDER_PLACED",
+  ORDER_READY: "ORDER_READY",
+  ORDER_CANCELLED: "ORDER_CANCELLED"
+};
+
+export const ORDER_STATUS = {
+  PLACED: "PLACED",
+  PREPARING: "PREPARING",
+  READY: "READY",
+  COLLECTED: "COLLECTED",
+  CANCELLED: "CANCELLED"
+};
