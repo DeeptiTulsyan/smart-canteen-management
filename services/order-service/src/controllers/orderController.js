@@ -1,18 +1,19 @@
 const Order = require("../models/Order");
-// const { getMenuItemById } = require("../services/menuService");
+const { getMenuItemById } = require("../services/menuService");
 // const { debitWallet } = require("../services/walletService");
 // const { publishEvent } = require("../producers/orderProducer");
 
 class OrderController {
+
   static async createOrder(req, res) {
     try {
       const { items } = req.body;
 
       if (!items || !Array.isArray(items) || items.length === 0) {
-        return res.status(400).json({
-          message: "Items are required"
-        });
+        return res.status(400).json({ message: "Items are required" });
       }
+
+      const orderItems = [];
 
       for (const item of items) {
         if (!item.menuId || !item.qty) {
@@ -20,61 +21,37 @@ class OrderController {
             message: "Each item must contain menuId and qty"
           });
         }
+
+        const menuItem = await getMenuItemById(item.menuId);
+
+        orderItems.push({
+          name: menuItem.name,
+          price: menuItem.price,
+          qty: item.qty
+        });
       }
 
-      // Temporary mock data for testing only Order Service
-      const studentId = "22BCE1023";
-      const email = "student@email.com";
+      const total = orderItems.reduce(
+        (sum, item) => sum + item.price * item.qty,
+        0
+      );
 
-      const enrichedItems = items.map((item) => {
-        return {
-          name: "Veg Sandwich",
-          price: 80,
-          qty: item.qty
-        };
-      });
-
-      const total = enrichedItems.reduce((sum, item) => {
-        return sum + item.price * item.qty;
-      }, 0);
-
-      // Temporary skip for now
-      // await debitWallet(studentId, total);
-
-      const order = new Order({
+      const order = await Order.create({
         orderId: "ORD" + Date.now(),
-        studentId,
-        email,
-        items: enrichedItems,
+        studentId: "22BCE1023", // temporary until JWT
+        email: "student@email.com", // temporary until JWT
+        items: orderItems,
         total,
         status: "PLACED"
       });
 
-      await order.save();
-
-      const eventData = {
-        event: "ORDER_PLACED",
-        orderId: order.orderId,
-        studentId: order.studentId,
-        email: order.email,
-        items: order.items,
-        total: order.total,
-        status: order.status,
-        timestamp: new Date()
-      };
-
-      // Temporary skip for now
-      // await publishEvent(eventData);
-
-      return res.status(201).json({
+      res.status(201).json({
         message: "Order placed successfully",
         order
       });
     } catch (error) {
-      console.error("Create Order Error:", error.message);
-
-      return res.status(500).json({
-        message: error.message || "Error creating order"
+      res.status(500).json({
+        message: error.message || "Failed to create order"
       });
     }
   }
