@@ -1,6 +1,6 @@
 import { getChannel } from "../../../../shared/rabbitmq.js";
 import { QUEUE_NAME } from "../../../../shared/constants.js";
-import { handleNotification } from "./handlers/notificationService.js";
+import { handleNotification } from "../handlers/notificationService.js";
 
 export const startOrderConsumer = async () => {
   const channel = getChannel();

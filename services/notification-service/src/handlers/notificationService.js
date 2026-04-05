@@ -1,4 +1,4 @@
-import Notification from "../../models/Notification.js";
+import Notification from "../models/Notification.js";
 
 export const handleNotification = async (data) => {
   const { event, orderId, email, studentId } = data;
