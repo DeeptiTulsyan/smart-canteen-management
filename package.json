@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "This project is a **microservices-based food ordering system** that allows students to pre-order meals efficiently.",
   "main": "index.js",
-  "type": "module",
   "directories": {
     "doc": "docs"
   },

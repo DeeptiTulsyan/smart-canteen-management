@@ -1,15 +1,14 @@
-import dotenv from "dotenv";
-dotenv.config();
+require("dotenv").config();
 
-import { connectRabbitMQ } from "../../../shared/rabbitmq.js";
-import { startOrderConsumer } from "./consumers/orderConsumer.js";
-import { connectDB } from "./config/db.js";
+const { connectRabbitMQ } = require("../../../shared/rabbitmq");
+const { startOrderConsumer } = require("./consumers/orderConsumer");
+const { connectDB } = require("./config/db");
 
 const start = async () => {
   try {
     console.log("Starting Notification Service...");
 
-    await connectDB();    
+    await connectDB();
     await connectRabbitMQ(); // Step 1
     await startOrderConsumer(); // Step 2
 

@@ -1,25 +1,18 @@
-const amqp = require("amqplib");
+const { getChannel } = require("../../../../shared/rabbitmq");
+const { QUEUE_NAME } = require("../../../../shared/constants");
 
 const publishEvent = async (eventData) => {
   try {
-    const connection = await amqp.connect(process.env.RABBITMQ_URL);
-    const channel = await connection.createChannel();
-
-    await channel.assertQueue(process.env.QUEUE_NAME);
+    const channel = getChannel();
 
     channel.sendToQueue(
-      process.env.QUEUE_NAME,
+      QUEUE_NAME,
       Buffer.from(JSON.stringify(eventData))
     );
 
-    console.log("Event published:", eventData.event);
-
-    setTimeout(() => {
-      connection.close();
-    }, 500);
-
+    console.log("📤 Event published:", eventData.event);
   } catch (error) {
-    console.error("Error publishing event:", error);
+    console.error("❌ Error publishing event:", error);
   }
 };
 

@@ -1,6 +1,6 @@
-import Notification from "../models/Notification.js";
+const Notification = require("../models/Notification");
 
-export const handleNotification = async (data) => {
+const handleNotification = async (data) => {
   const { event, orderId, email, studentId } = data;
 
   let message = "";
@@ -21,7 +21,6 @@ export const handleNotification = async (data) => {
     status = "CANCELLED";
   }
 
-  // ✅ ADD THIS LOG
   console.log("👉 About to save notification:", {
     orderId,
     studentId,
@@ -30,7 +29,6 @@ export const handleNotification = async (data) => {
     status
   });
 
-  // 👉 Save to DB
   const savedNotification = await Notification.create({
     orderId,
     studentId,
@@ -39,9 +37,9 @@ export const handleNotification = async (data) => {
     status
   });
 
-  // ✅ ADD THIS LOG
   console.log("✅ Saved in DB:", savedNotification);
 
-  // 👉 Console output (for demo)
   console.log(`📩 ${message} (Order: ${orderId})`);
 };
+
+module.exports = { handleNotification };

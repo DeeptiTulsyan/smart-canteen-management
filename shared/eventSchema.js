@@ -1,8 +1,6 @@
-// shared/eventSchema.js
+const { EVENTS } = require("./constants");
 
-import { EVENTS } from "./constants.js";
-
-export const validateEvent = (data) => {
+const validateEvent = (data) => {
   if (!data.event) throw new Error("Event type is required");
 
   if (!Object.values(EVENTS).includes(data.event)) {
@@ -16,10 +14,15 @@ export const validateEvent = (data) => {
   return true;
 };
 
-export const createEvent = (eventType, payload) => {
+const createEvent = (eventType, payload) => {
   return {
     event: eventType,
     ...payload,
     timestamp: new Date().toISOString()
   };
+};
+
+module.exports = {
+  validateEvent,
+  createEvent
 };

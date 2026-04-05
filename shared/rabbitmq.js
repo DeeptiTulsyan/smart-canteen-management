@@ -1,11 +1,9 @@
-// shared/rabbitmq.js
-
-import amqp from "amqplib";
-import { QUEUE_NAME } from "./constants.js";
+const amqp = require("amqplib");
+const { QUEUE_NAME } = require("./constants");
 
 let channel;
 
-export const connectRabbitMQ = async () => {
+const connectRabbitMQ = async () => {
   try {
     const connection = await amqp.connect(process.env.RABBITMQ_URL);
     channel = await connection.createChannel();
@@ -20,9 +18,14 @@ export const connectRabbitMQ = async () => {
   }
 };
 
-export const getChannel = () => {
+const getChannel = () => {
   if (!channel) {
     throw new Error("RabbitMQ not initialized");
   }
   return channel;
+};
+
+module.exports = {
+  connectRabbitMQ,
+  getChannel
 };

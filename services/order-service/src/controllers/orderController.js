@@ -1,10 +1,10 @@
 const Order = require("../models/Order");
 const { getMenuItemById } = require("../services/menuService");
-// const { debitWallet } = require("../services/walletService");
-// const { publishEvent } = require("../producers/orderProducer");
+const { publishEvent } = require("../producers/orderProducer");
 
 class OrderController {
 
+  // ✅ CREATE ORDER
   static async createOrder(req, res) {
     try {
       const { items } = req.body;
@@ -24,6 +24,13 @@ class OrderController {
 
         const menuItem = await getMenuItemById(item.menuId);
 
+        // ✅ FIX: Handle invalid menu item
+        if (!menuItem) {
+          return res.status(404).json({
+            message: `Menu item not found: ${item.menuId}`
+          });
+        }
+
         orderItems.push({
           name: menuItem.name,
           price: menuItem.price,
@@ -38,24 +45,42 @@ class OrderController {
 
       const order = await Order.create({
         orderId: "ORD" + Date.now(),
-        studentId: "22BCE1023", // temporary until JWT
-        email: "student@email.com", // temporary until JWT
+        studentId: "22BCE1023", // temporary
+        email: "student@email.com", // temporary
         items: orderItems,
         total,
         status: "PLACED"
       });
 
-      res.status(201).json({
+      // ✅ FIX: SEND ORDER_PLACED EVENT
+      const eventData = {
+        event: "ORDER_PLACED",
+        orderId: order.orderId,
+        studentId: order.studentId,
+        email: order.email,
+        items: order.items,
+        total: order.total,
+        status: order.status,
+        timestamp: new Date()
+      };
+
+      await publishEvent(eventData);
+
+      return res.status(201).json({
         message: "Order placed successfully",
         order
       });
+
     } catch (error) {
-      res.status(500).json({
+      console.error("Create Order Error:", error.message);
+
+      return res.status(500).json({
         message: error.message || "Failed to create order"
       });
     }
   }
 
+  // ✅ UPDATE ORDER STATUS
   static async updateOrderStatus(req, res) {
     try {
       const { status } = req.body;
@@ -88,6 +113,7 @@ class OrderController {
         eventName = "ORDER_CANCELLED";
       }
 
+      // ✅ FIX: SEND EVENT
       if (eventName) {
         const eventData = {
           event: eventName,
@@ -100,14 +126,14 @@ class OrderController {
           timestamp: new Date()
         };
 
-        // Temporary skip for now
-        // await publishEvent(eventData);
+        await publishEvent(eventData);
       }
 
       return res.status(200).json({
         message: "Order status updated successfully",
         order
       });
+
     } catch (error) {
       console.error("Update Order Error:", error.message);
 
@@ -117,10 +143,10 @@ class OrderController {
     }
   }
 
+  // ✅ GET ALL ORDERS
   static async getAllOrders(req, res) {
     try {
       const orders = await Order.find();
-
       return res.status(200).json(orders);
     } catch (error) {
       console.error("Get All Orders Error:", error.message);
@@ -131,6 +157,7 @@ class OrderController {
     }
   }
 
+  // ✅ GET ORDER BY ID
   static async getOrderById(req, res) {
     try {
       const orderId = req.params.id;
@@ -144,6 +171,7 @@ class OrderController {
       }
 
       return res.status(200).json(order);
+
     } catch (error) {
       console.error("Get Order By ID Error:", error.message);
 

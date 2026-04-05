@@ -1,8 +1,8 @@
-import { getChannel } from "../../../../shared/rabbitmq.js";
-import { QUEUE_NAME } from "../../../../shared/constants.js";
-import { handleNotification } from "../handlers/notificationService.js";
+const { getChannel } = require("../../../../shared/rabbitmq");
+const { QUEUE_NAME } = require("../../../../shared/constants");
+const { handleNotification } = require("../handlers/notificationService");
 
-export const startOrderConsumer = async () => {
+const startOrderConsumer = async () => {
   const channel = getChannel();
 
   console.log("Listening to queue...");
@@ -19,3 +19,5 @@ export const startOrderConsumer = async () => {
     channel.ack(msg); // VERY IMPORTANT
   });
 };
+
+module.exports = { startOrderConsumer };
