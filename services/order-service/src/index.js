@@ -9,7 +9,7 @@ app.use(express.json());
 
 // routes
 const orderRoutes = require("./routes/orderRoutes");
-app.use("/orders", orderRoutes);
+app.use("/api/orders", orderRoutes);
 
 const startServer = async () => {
   try {
