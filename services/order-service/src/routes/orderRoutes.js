@@ -11,15 +11,15 @@ const {
 const verifyToken = require("../middleware/authMiddleware");
 
 // Create new order
-router.post("/", createOrder);
+router.post("/", verifyToken, createOrder);
 
 // Update order status
-router.patch("/:id", updateOrderStatus);
+router.patch("/:id", verifyToken, updateOrderStatus);
 
 // Get all orders
-router.get("/", getAllOrders);
+router.get("/", verifyToken, getAllOrders);
 
 // Get single order by orderId
-router.get("/:id", getOrderById);
+router.get("/:id", verifyToken, getOrderById);
 
 module.exports = router;

@@ -9,6 +9,8 @@ class OrderController {
     try {
       const { items } = req.body;
 
+      const token = req.headers.authorization?.split(" ")[1];
+
       if (!items || !Array.isArray(items) || items.length === 0) {
         return res.status(400).json({ message: "Items are required" });
       }
@@ -43,14 +45,16 @@ class OrderController {
       );
 
       // temporary until JWT integration
-      const studentId = "22BCE1023";
-      const email = "student@email.com";
+      // const studentId = "22BCE1023";
+      // const email = "student@email.com";
 
+      const { studentId, email } = req.user;
+      
       // DEBIT WALLET BEFORE CREATING ORDER
       let walletResponse;
 
       try {
-        walletResponse = await debitWallet(studentId, total);
+        walletResponse = await debitWallet(studentId, total, token);
       } catch (error) {
         return res.status(400).json({
           message: error.message,

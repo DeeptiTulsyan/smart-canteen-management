@@ -24,7 +24,7 @@ const notificationSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: ["PLACED", "READY", "CANCELLED"],
+      enum: ["PLACED", "PREPARING", "READY", "CANCELLED"],
       required: true
     }
   },

@@ -16,30 +16,38 @@ const handleNotification = async (data) => {
     status = "READY";
   }
 
+  if (event === "ORDER_PREPARING") {
+    message = "Your order is being prepared";
+    status = "PREPARING";
+  }
+
   if (event === "ORDER_CANCELLED") {
     message = "Your order is cancelled";
     status = "CANCELLED";
   }
 
-  console.log("👉 About to save notification:", {
-    orderId,
-    studentId,
-    email,
-    message,
-    status
-  });
+  try {
+    console.log("👉 About to save notification:", {
+      orderId,
+      studentId,
+      email,
+      message,
+      status
+    });
 
-  const savedNotification = await Notification.create({
-    orderId,
-    studentId,
-    email,
-    message,
-    status
-  });
+    const savedNotification = await Notification.create({
+      orderId,
+      studentId,
+      email,
+      message,
+      status
+    });
 
-  console.log("✅ Saved in DB:", savedNotification);
-
-  console.log(`📩 ${message} (Order: ${orderId})`);
+    console.log("✅ Saved in DB:", savedNotification);
+    console.log(`📩 ${message} (Order: ${orderId})`);
+  } catch (error) {
+    console.error("❌ Failed to save notification:", error.message); // ✅ NOW YOU'LL SEE THE REAL ERROR
+  }
 };
 
 module.exports = { handleNotification };
