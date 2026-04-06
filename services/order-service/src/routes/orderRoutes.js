@@ -8,7 +8,7 @@ const {
 } = require("../controllers/orderController");
 
 // optional: add JWT middleware later
-// const verifyToken = require("../middleware/authMiddleware");
+const verifyToken = require("../middleware/authMiddleware");
 
 // Create new order
 router.post("/", createOrder);
