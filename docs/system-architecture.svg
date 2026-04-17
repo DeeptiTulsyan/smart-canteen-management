@@ -1,0 +1,173 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1600" y2="1000" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF7E8"/>
+      <stop offset="0.58" stop-color="#F4ECDD"/>
+      <stop offset="1" stop-color="#EAF2EB"/>
+    </linearGradient>
+    <linearGradient id="frontend" x1="90" y1="120" x2="480" y2="260" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#17212B"/>
+      <stop offset="1" stop-color="#2C3A45"/>
+    </linearGradient>
+    <linearGradient id="gateway" x1="600" y1="120" x2="1000" y2="260" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C65E2D"/>
+      <stop offset="1" stop-color="#8F3F1B"/>
+    </linearGradient>
+    <linearGradient id="service" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#FFF7EE"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#6E4D24" flood-opacity="0.14"/>
+    </filter>
+    <marker id="arrow" markerWidth="14" markerHeight="14" refX="11" refY="7" orient="auto" markerUnits="strokeWidth">
+      <path d="M2 2L12 7L2 12V2Z" fill="#2E3944"/>
+    </marker>
+    <marker id="orangeArrow" markerWidth="14" markerHeight="14" refX="11" refY="7" orient="auto" markerUnits="strokeWidth">
+      <path d="M2 2L12 7L2 12V2Z" fill="#C65E2D"/>
+    </marker>
+    <style>
+      .title { font: 800 48px Georgia, serif; fill: #17212B; }
+      .subtitle { font: 500 21px "Segoe UI", sans-serif; fill: #5F6C78; }
+      .section { font: 700 16px "Segoe UI", sans-serif; letter-spacing: 0.16em; fill: #C65E2D; }
+      .box-title { font: 800 25px Georgia, serif; fill: #17212B; }
+      .box-title-light { font: 800 28px Georgia, serif; fill: #FFFFFF; }
+      .box-copy { font: 500 16px "Segoe UI", sans-serif; fill: #5F6C78; }
+      .box-copy-light { font: 500 16px "Segoe UI", sans-serif; fill: #FFF4E6; }
+      .tiny { font: 600 14px "Segoe UI", sans-serif; fill: #5F6C78; }
+      .infra-title { font: 800 22px Georgia, serif; fill: #17212B; }
+      .label { font: 700 15px "Segoe UI", sans-serif; fill: #2E3944; }
+      .pill-text { font: 700 13px "Segoe UI", sans-serif; fill: #8F3F1B; }
+      .line { stroke: #2E3944; stroke-width: 3; stroke-linecap: round; marker-end: url(#arrow); }
+      .event-line { stroke: #C65E2D; stroke-width: 4; stroke-linecap: round; marker-end: url(#orangeArrow); stroke-dasharray: 10 9; }
+      .db-line { stroke: #58746B; stroke-width: 3; stroke-linecap: round; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#bg)"/>
+  <circle cx="1350" cy="130" r="210" fill="#DDEFE1" opacity="0.55"/>
+  <circle cx="150" cy="850" r="240" fill="#F5C86E" opacity="0.18"/>
+
+  <text x="80" y="70" class="section">SMART CANTEEN MANAGEMENT SYSTEM</text>
+  <text x="80" y="122" class="title">System Architecture</text>
+  <text x="80" y="158" class="subtitle">React frontend, API Gateway, microservices, MongoDB, Redis caching, and RabbitMQ event notifications.</text>
+
+  <!-- Frontend -->
+  <rect x="90" y="220" width="390" height="150" rx="34" fill="url(#frontend)" filter="url(#shadow)"/>
+  <text x="125" y="272" class="box-title-light">React Frontend</text>
+  <text x="125" y="308" class="box-copy-light">Student UI: menu, cart, wallet, orders</text>
+  <text x="125" y="334" class="box-copy-light">Admin UI: menu control, order control</text>
+
+  <!-- Gateway -->
+  <rect x="610" y="220" width="380" height="150" rx="34" fill="url(#gateway)" filter="url(#shadow)"/>
+  <text x="650" y="272" class="box-title-light">API Gateway</text>
+  <text x="650" y="308" class="box-copy-light">Single frontend entry point</text>
+  <text x="650" y="334" class="box-copy-light">Routes /api/* to the right service</text>
+
+  <line x1="485" y1="295" x2="600" y2="295" class="line"/>
+  <text x="515" y="275" class="label">HTTP API</text>
+
+  <!-- Services heading -->
+  <text x="90" y="442" class="section">BACKEND MICROSERVICES</text>
+
+  <!-- Service boxes -->
+  <rect x="90" y="470" width="220" height="135" rx="26" fill="url(#service)" stroke="#E6DCCB" filter="url(#shadow)"/>
+  <text x="120" y="512" class="box-title">User Service</text>
+  <text x="120" y="544" class="box-copy">Register, login</text>
+  <text x="120" y="570" class="box-copy">JWT profile /me</text>
+
+  <rect x="340" y="470" width="220" height="135" rx="26" fill="url(#service)" stroke="#E6DCCB" filter="url(#shadow)"/>
+  <text x="370" y="512" class="box-title">Admin Service</text>
+  <text x="370" y="544" class="box-copy">Admin login</text>
+  <text x="370" y="570" class="box-copy">Menu/order controls</text>
+
+  <rect x="590" y="470" width="220" height="135" rx="26" fill="url(#service)" stroke="#E6DCCB" filter="url(#shadow)"/>
+  <text x="620" y="512" class="box-title">Menu Service</text>
+  <text x="620" y="544" class="box-copy">Menu CRUD</text>
+  <text x="620" y="570" class="box-copy">Redis cached reads</text>
+
+  <rect x="840" y="470" width="220" height="135" rx="26" fill="url(#service)" stroke="#E6DCCB" filter="url(#shadow)"/>
+  <text x="870" y="512" class="box-title">Order Service</text>
+  <text x="870" y="544" class="box-copy">Validate cart</text>
+  <text x="870" y="570" class="box-copy">Create orders + events</text>
+
+  <rect x="1090" y="470" width="220" height="135" rx="26" fill="url(#service)" stroke="#E6DCCB" filter="url(#shadow)"/>
+  <text x="1120" y="512" class="box-title">Wallet Service</text>
+  <text x="1120" y="544" class="box-copy">Create/top-up wallet</text>
+  <text x="1120" y="570" class="box-copy">Debit balance</text>
+
+  <rect x="1340" y="470" width="220" height="135" rx="26" fill="url(#service)" stroke="#E6DCCB" filter="url(#shadow)"/>
+  <text x="1370" y="512" class="box-title">Notification</text>
+  <text x="1370" y="544" class="box-copy">Consumes events</text>
+  <text x="1370" y="570" class="box-copy">Shows order alerts</text>
+
+  <!-- Gateway to services -->
+  <path d="M800 370V420H200V458" class="line"/>
+  <path d="M800 370V420H450V458" class="line"/>
+  <path d="M800 370V420H700V458" class="line"/>
+  <path d="M800 370V420H950V458" class="line"/>
+  <path d="M800 370V420H1200V458" class="line"/>
+  <path d="M800 370V420H1450V458" class="line"/>
+
+  <!-- Inter-service sync calls -->
+  <path d="M920 605C890 655 790 655 745 610" class="line"/>
+  <text x="775" y="665" class="label">validate menu items</text>
+  <path d="M1020 605C1070 650 1140 650 1175 610" class="line"/>
+  <text x="1045" y="665" class="label">debit wallet</text>
+
+  <!-- Infrastructure heading -->
+  <text x="90" y="735" class="section">DATA + EVENT INFRASTRUCTURE</text>
+
+  <!-- Infra boxes -->
+  <rect x="90" y="765" width="220" height="105" rx="24" fill="#EAF4EF" stroke="#C9DED3" filter="url(#shadow)"/>
+  <text x="120" y="808" class="infra-title">User DB</text>
+  <text x="120" y="838" class="tiny">MongoDB: users</text>
+
+  <rect x="340" y="765" width="220" height="105" rx="24" fill="#EAF4EF" stroke="#C9DED3" filter="url(#shadow)"/>
+  <text x="370" y="808" class="infra-title">Admin DB</text>
+  <text x="370" y="838" class="tiny">MongoDB: admins</text>
+
+  <rect x="590" y="765" width="220" height="105" rx="24" fill="#EAF4EF" stroke="#C9DED3" filter="url(#shadow)"/>
+  <text x="620" y="808" class="infra-title">Menu DB</text>
+  <text x="620" y="838" class="tiny">MongoDB + Redis cache</text>
+
+  <rect x="840" y="765" width="220" height="105" rx="24" fill="#EAF4EF" stroke="#C9DED3" filter="url(#shadow)"/>
+  <text x="870" y="808" class="infra-title">Order DB</text>
+  <text x="870" y="838" class="tiny">MongoDB: orders</text>
+
+  <rect x="1090" y="765" width="220" height="105" rx="24" fill="#EAF4EF" stroke="#C9DED3" filter="url(#shadow)"/>
+  <text x="1120" y="808" class="infra-title">Wallet DB</text>
+  <text x="1120" y="838" class="tiny">MongoDB: balances</text>
+
+  <rect x="1340" y="765" width="220" height="105" rx="24" fill="#EAF4EF" stroke="#C9DED3" filter="url(#shadow)"/>
+  <text x="1370" y="808" class="infra-title">Notification DB</text>
+  <text x="1370" y="838" class="tiny">MongoDB: alerts</text>
+
+  <!-- DB lines -->
+  <line x1="200" y1="608" x2="200" y2="755" class="db-line"/>
+  <line x1="450" y1="608" x2="450" y2="755" class="db-line"/>
+  <line x1="700" y1="608" x2="700" y2="755" class="db-line"/>
+  <line x1="950" y1="608" x2="950" y2="755" class="db-line"/>
+  <line x1="1200" y1="608" x2="1200" y2="755" class="db-line"/>
+  <line x1="1450" y1="608" x2="1450" y2="755" class="db-line"/>
+
+  <!-- RabbitMQ -->
+  <rect x="995" y="235" width="250" height="88" rx="24" fill="#FFF2E8" stroke="#F0B690" filter="url(#shadow)"/>
+  <text x="1030" y="270" class="infra-title">RabbitMQ</text>
+  <text x="1030" y="299" class="tiny">Queue: order_events</text>
+
+  <path d="M1010 470C1045 405 1085 360 1110 326" class="event-line"/>
+  <text x="1075" y="430" class="pill-text">ORDER_PLACED</text>
+  <path d="M1245 280C1325 300 1405 390 1440 458" class="event-line"/>
+  <text x="1290" y="330" class="pill-text">ORDER_READY / CANCELLED</text>
+
+  <!-- Legend -->
+  <rect x="90" y="910" width="1420" height="55" rx="20" fill="rgba(255,255,255,0.62)" stroke="#E6DCCB"/>
+  <circle cx="125" cy="938" r="7" fill="#2E3944"/>
+  <text x="142" y="944" class="tiny">REST API request/response</text>
+  <circle cx="365" cy="938" r="7" fill="#C65E2D"/>
+  <text x="382" y="944" class="tiny">RabbitMQ event message</text>
+  <circle cx="625" cy="938" r="7" fill="#58746B"/>
+  <text x="642" y="944" class="tiny">Database/cache persistence</text>
+  <text x="980" y="944" class="tiny">Frontend calls only the API Gateway; services communicate internally as needed.</text>
+</svg>

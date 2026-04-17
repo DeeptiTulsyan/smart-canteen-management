@@ -1,110 +1,151 @@
-# 🍽️ Smart Canteen Pre-Order System
+# Smart Canteen Management System
 
-## 📌 Overview
+A full-stack canteen ordering platform built with a React frontend, an API gateway, and seven Node.js microservices. Students can register, log in, browse menu items, add items to a cart, manage a wallet, place orders, and view notifications. Admins can manage menu items and update order statuses from a role-based dashboard.
 
-This project is a **microservices-based food ordering system** that allows students to pre-order meals efficiently.
+## Architecture
 
-The system is designed using:
-- Microservices Architecture
-- Event-Driven Communication
-- REST APIs
+![System Architecture](docs/system-architecture.svg)
 
----
+The frontend talks to the backend only through the API gateway on port `5000`. The gateway forwards requests to the correct service, while the order service also communicates with menu and wallet services internally. RabbitMQ is used for asynchronous order notifications, Redis is used for menu caching, and MongoDB stores service data.
 
-## 🏗️ Architecture
+## Services
 
-The system consists of multiple independent services:
+| Service | Port | Responsibility |
+| --- | --- | --- |
+| Frontend | `5173` | React UI for student and admin workflows |
+| API Gateway | `5000` | Single backend entry point for the frontend |
+| Order Service | `5001` | Creates orders, validates items, debits wallet, publishes events |
+| Menu Service | `5002` | Stores and serves menu items with Redis caching |
+| User Service | `5003` | Student registration, login, JWT auth, profile API |
+| Admin Service | `5004` | Admin login, menu controls, order status controls |
+| Wallet Service | `5005` | Wallet creation, balance lookup, atomic debit |
+| Notification Service | `5006` | Consumes RabbitMQ events and exposes notification APIs |
 
-- **User Service** → Authentication & JWT
-- **Menu Service** → Menu retrieval (with Redis caching)
-- **Order Service** → Core business logic
-- **Wallet Service** → Payment handling (atomic operations)
-- **Notification Service** → Event-based notifications
+## Main Features
 
----
+- Student authentication with JWT-protected routes.
+- Menu browsing with item detail lookup before adding to cart.
+- Cart management in frontend `localStorage`.
+- Wallet creation and payment debit during order placement.
+- Order placement through the order service.
+- RabbitMQ-based notification creation after order events.
+- Admin dashboard for menu CRUD and order status updates.
+- API gateway routing for all frontend-to-backend communication.
 
-## 🔄 Communication
+## Tech Stack
 
-### Synchronous (REST APIs)
-- Order → Menu Service (validate items)
-- Order → Wallet Service (deduct balance)
+- Frontend: React, Vite, React Router, Axios
+- Backend: Node.js, Express.js
+- Databases: MongoDB per service
+- Messaging: RabbitMQ
+- Caching: Redis
+- Auth: JWT
+- Tooling: Docker Compose, npm, Git
 
-### Asynchronous (RabbitMQ)
-- Order → Notification Service
+## Local Setup
 
----
+### 1. Start Infrastructure
 
-## 📬 Event-Driven Flow
-
-Events used:
-- `ORDER_PLACED`
-- `ORDER_READY`
-- `ORDER_CANCELLED`
-
----
-
-## ⚙️ Technologies Used
-
-- Node.js / Express
-- MongoDB
-- Redis
-- RabbitMQ
-
----
-
-## 🚀 How to Run
-
-### 1. Start Required Services
-
-- MongoDB
-- Redis
-- RabbitMQ
-
----
-
-### 2. Clone Repository
+Make sure Docker Desktop is running, then start MongoDB, Redis, and RabbitMQ:
 
 ```bash
-git clone <your-repo-url>
-cd smart-canteen-system
+docker compose up -d
+```
 
+RabbitMQ management UI is available at `http://localhost:15672`.
 
-3. Setup Environment Variables
+### 2. Configure Environment Files
 
-Copy .env.example → .env
+Copy each example file to `.env`:
 
-4. Run Services
+```bash
+copy .env.example .env
+copy frontend\.env.example frontend\.env
+copy services\api-gateway\.env.example services\api-gateway\.env
+copy services\user-service\.env.example services\user-service\.env
+copy services\menu-service\.env.example services\menu-service\.env
+copy services\order-service\.env.example services\order-service\.env
+copy services\wallet-service\.env.example services\wallet-service\.env
+copy services\notification-service\.env.example services\notification-service\.env
+copy services\admin-service\.env.example services\admin-service\.env
+```
 
-For each service:
+Use the same `JWT_SECRET` value across all services that create or verify tokens. The example secret is for local development only.
 
-cd services/<service-name>
-npm install
-npm start
-📁 Project Structure
-services/
-shared/
-docs/
-📜 System Features
-Microservices-based design
-Event-driven architecture
-Redis caching for performance
-Atomic wallet transactions (concurrency control)
-Asynchronous notifications
-🧠 Key Concepts Demonstrated
-Microservices Architecture
-REST API Communication
-Event-Driven Systems (RabbitMQ)
-Caching (Redis)
-Concurrency Control (MongoDB)
-👥 Team Responsibilities
+### 3. Install Dependencies
 
-Each team member is responsible for one microservice.
+Run this once in each service and in the frontend:
 
-⚠️ Important Rules
-Do NOT change event format
-Do NOT change queue name
-Always use shared constants
-Use RabbitMQ for event communication
-🎯 Conclusion
+```bash
+cd services\api-gateway && npm install
+cd ..\user-service && npm install
+cd ..\menu-service && npm install
+cd ..\order-service && npm install
+cd ..\wallet-service && npm install
+cd ..\notification-service && npm install
+cd ..\admin-service && npm install
+cd ..\..\frontend && npm install
+```
 
-This project demonstrates a scalable and efficient microservices architecture for a real-world food ordering system.
+### 4. Run Backend Services
+
+Open separate terminals and run:
+
+```bash
+cd services\user-service && npm start
+cd services\menu-service && npm start
+cd services\wallet-service && npm start
+cd services\order-service && npm start
+cd services\notification-service && npm start
+cd services\admin-service && npm start
+cd services\api-gateway && npm start
+```
+
+### 5. Run Frontend
+
+```bash
+cd frontend
+npm run dev
+```
+
+Open `http://localhost:5173`.
+
+## Demo Accounts
+
+Student accounts can be created from the registration page.
+
+Development admin account:
+
+```text
+Email: admin@smartcanteen.com
+Password: Admin@123
+```
+
+Use the role tabs on the login page to switch between Student and Admin login.
+
+## API Entry Point
+
+All frontend API calls go through:
+
+```text
+http://localhost:5000
+```
+
+Important gateway routes:
+
+- `/api/auth`
+- `/api/users`
+- `/api/menu`
+- `/api/orders`
+- `/api/wallet`
+- `/api/notifications`
+- `/api/admin`
+
+Detailed endpoints are documented in [docs/api-contracts.md](docs/api-contracts.md).
+
+## Documentation
+
+- [Architecture](docs/architecture.md)
+- [API and event contracts](docs/api-contracts.md)
+- [Workflow](docs/workflow.md)
+- [Frontend guide](frontend/README.md)
